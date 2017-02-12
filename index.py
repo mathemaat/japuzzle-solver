@@ -47,5 +47,5 @@ columnMatrix = [
 puzzle = Puzzle(width, height)
 puzzle.setRowMatrix(rowMatrix)
 puzzle.setColumnMatrix(columnMatrix)
-puzzle.view()
+puzzle.view(3, 2)
 
