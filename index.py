@@ -1,8 +1,5 @@
 from Puzzle import Puzzle
 
-width = 15
-height = 20
-
 rowMatrix = [
   [6],
   [3, 4],
@@ -44,7 +41,7 @@ columnMatrix = [
   [5, 1]
 ]
 
-puzzle = Puzzle(width, height)
+puzzle = Puzzle(len(columnMatrix), len(rowMatrix))
 puzzle.setRowMatrix(rowMatrix)
 puzzle.setColumnMatrix(columnMatrix)
 puzzle.view(3, 2)
