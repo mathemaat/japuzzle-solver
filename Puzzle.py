@@ -69,34 +69,44 @@ class Puzzle(object):
     rowMatrix    = self.rowMatrix
     columnMatrix = self.transpose(self.columnMatrix)
 
+    lineFormat   = '%s|%s|'
+    borderFormat = '%s+%s+'
+    
     offset = 3 * len(rowMatrix[0])
     for row in columnMatrix:
-      line = (' ' * offset) + '|'
-      for entry in row:
-        if entry == None:
-          line += '   '
-        else:
-          line += ('   ' + str(entry))[-3:]
-      line += '|'
-      print line
-    border = ('-' * offset) + '+' + ('-' * 3 * self.width) + '+'
-    print border
-    for row in rowMatrix:
       line = ''
       for entry in row:
         if entry == None:
           line += '   '
         else:
           line += ('   ' + str(entry))[-3:]
-      line += '|'
-#        if self.grid[i][j] == 1:
-#          line += 'x'
-#        elif self.grid[i][j] == 0:
-#          line += '.'
-#        else:
-#          line += ' '
-      line += '|'
+      line = lineFormat % (' ' * offset, line)
       print line
+
+    border = borderFormat % ('-' * offset, '-' * 3 * self.width)
+    print border
+
+    for i, row in enumerate(rowMatrix):
+      line1 = ''
+      for entry in row:
+        if entry == None:
+          line1 += '   '
+        else:
+          line1 += ('   ' + str(entry))[-3:]
+      line2 = ' ' * offset
+      
+      fill = ''
+      for j in range(self.width):
+        if self.grid[i][j] == 1:
+          fill += 'x' * 3
+        elif self.grid[i][j] == 0:
+          fill += '.' * 3
+        else:
+          fill += ' ' * 3
+      line1 = lineFormat % (line1, fill)
+      line2 = lineFormat % (line2, fill)
+      print line1
+      print line2
     print border
 
   @staticmethod
