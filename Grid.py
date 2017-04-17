@@ -15,6 +15,15 @@ class Grid(object):
   def setCell(self, i, j, value):
     self.grid[i][j] = value
 
+  def getRow(self, i):
+    return self.grid[i]
+
+  def getColumn(self, index):
+    column = []
+    for i in xrange(self.height):
+      column.append(self.grid[i][index])
+    return column
+
   @staticmethod
   def transpose(matrix):
     newWidth = len(matrix)
