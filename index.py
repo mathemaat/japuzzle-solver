@@ -1,6 +1,6 @@
 from Puzzle import Puzzle
 
-rowMatrix = [
+rowEntries = [
   [6],
   [3, 4],
   [2, 2],
@@ -23,7 +23,7 @@ rowMatrix = [
   [4, 2, 5]
 ]
 
-columnMatrix = [
+columnEntries = [
   [6, 2, 1, 1],
   [3, 4, 3],
   [2, 6, 2],
@@ -41,8 +41,6 @@ columnMatrix = [
   [5, 1]
 ]
 
-puzzle = Puzzle(len(columnMatrix), len(rowMatrix))
-puzzle.setRowMatrix(rowMatrix)
-puzzle.setColumnMatrix(columnMatrix)
+puzzle = Puzzle(rowEntries, columnEntries)
 puzzle.view(3, 2)
 
