@@ -1,54 +1,79 @@
+from Entry import Entry
 from Grid import Grid
 
 class Puzzle(object):
 
-  def __init__(self, rowEntries, columnEntries):
-    self.width = len(columnEntries)
-    self.height = len(rowEntries)
+  def __init__(self, rows, columns):
+    self.width = len(columns)
+    self.height = len(rows)
 
     self.Grid = Grid(self.width, self.height)
 
-    self.rowEntries    = rowEntries
-    self.columnEntries = columnEntries
+    self.rows    = rows
+    self.columns = columns
 
     self.validate()
 
-  def validate(self):
-    self.validateRowEntries()
-    self.validateColumnEntries()
+    self.rowEntries    = self.objectifyRows(self.rows,    self.width)
+    self.columnEntries = self.objectifyRows(self.columns, self.height)
 
-  def validateRowEntries(self):
+  def validate(self):
+    self.validateRows()
+    self.validateColumns()
+
+  def validateRows(self):
     for i in xrange(self.height):
-      length = len(self.rowEntries[i])
+      length = len(self.rows[i])
       if length == 0:
         raise Exception('Row %d doesn\'t contain any values' % i)
 
-      total = sum(self.rowEntries[i])
+      total = sum(self.rows[i])
       if total > 0:
         span = total + length - 1
         if span > self.width:
           raise Exception('Span of row %d is %d (max is %d)' % (i, span, self.width))
 
-  def validateColumnEntries(self):
+  def validateColumns(self):
     for i in xrange(self.width):
-      length = len(self.columnEntries[i])
+      length = len(self.columns[i])
       if length == 0:
         raise Exception('Column %d doesn\'t contain any values' % i)
 
-      total = sum(self.columnEntries[i])
+      total = sum(self.columns[i])
       if total >= 0:
         span = total + length - 1
         if span > self.height:
           raise Exception('Span of column %d is %d (max is %d)' % (i, span, self.height))
 
+  @staticmethod
+  def objectifyRows(rows, length):
+    entries = []
+    for row in rows:
+      entries.append([Entry(i) for i in row])
+
+    for i, row in enumerate(rows):
+      minStartPositions = []
+      maxEndPositions = []
+      count = len(row)
+      for n in xrange(count):
+        if n == 0:
+          minStartPositions.append(0)
+          maxEndPositions.insert(0, length - 1)
+        else:
+          minStartPositions.append(minStartPositions[n-1] + row[n-1] + 1)
+          maxEndPositions.insert(0, maxEndPositions[0] - row[count-n-1] - 1)
+      for n in xrange(count):
+        entries[i][n].setBoundaries(minStartPositions[n], maxEndPositions[n])
+    return entries
+
   def getRowMatrix(self):
     rowMatrix = [None] * self.height
     for i in xrange(self.height):
-      total = sum(self.rowEntries[i])
+      total = sum(self.rows[i])
       if total == 0:
         rowMatrix[i] = [0]
       else:
-        rowMatrix[i] = self.rowEntries[i]
+        rowMatrix[i] = self.rows[i]
     
     maxLength = self.getMaxRowLength(rowMatrix)
     for i in xrange(len(rowMatrix)):
@@ -60,11 +85,11 @@ class Puzzle(object):
   def getColumnMatrix(self):
     columnMatrix = [None] * self.width
     for i in xrange(self.width):
-      total = sum(self.columnEntries[i])
+      total = sum(self.columns[i])
       if total == 0:
         columnMatrix[i] = [0]
       else:
-        columnMatrix[i] = self.columnEntries[i]
+        columnMatrix[i] = self.columns[i]
     
     maxLength = self.getMaxRowLength(columnMatrix)
     for i in xrange(len(columnMatrix)):
