@@ -1,3 +1,4 @@
+from Grid import Grid
 
 class Puzzle(object):
 
@@ -5,9 +6,7 @@ class Puzzle(object):
     self.width = width
     self.height = height
 
-    self.grid = []
-    for i in xrange(self.height):
-      self.grid.append([None] * self.width)
+    self.Grid = Grid(width, height)
 
     self.rowMatrix    = [None] * self.height
     self.columnMatrix = [None] * self.width
@@ -67,7 +66,7 @@ class Puzzle(object):
 
   def view(self, cellWidth, cellHeight):
     rowMatrix    = self.rowMatrix
-    columnMatrix = self.transpose(self.columnMatrix)
+    columnMatrix = Grid.transpose(self.columnMatrix)
 
     lineFormat   = '%s|%s|'
     borderFormat = '%s+%s+'
@@ -97,9 +96,10 @@ class Puzzle(object):
 
       fill = ''
       for j in range(self.width):
-        if self.grid[i][j] == 1:
+        value = self.Grid.getCell(i, j)
+        if value == 1:
           fill += 'X' * cellWidth
-        elif self.grid[i][j] == 0:
+        elif value == 0:
           fill += '.' * cellWidth
         else:
           fill += ' ' * cellWidth
@@ -112,15 +112,4 @@ class Puzzle(object):
           print line2
           extraLines -= 1
     print border
-
-  @staticmethod
-  def transpose(matrix):
-    newWidth = len(matrix)
-    newHeight = len(matrix[0])
-    transposed = [None] * newHeight
-    for i in xrange(newHeight):
-      transposed[i] = [None] * newWidth
-      for j in xrange(newWidth):
-        transposed[i][j] = matrix[j][i]
-    return transposed
 
