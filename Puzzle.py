@@ -136,3 +136,9 @@ class Puzzle(object):
           extraLines -= 1
     print border
 
+  def solve(self):
+    for Slice in self.rowSlices:
+      Slice.solve()
+    for Slice in self.columnSlices:
+      Slice.solve()
+

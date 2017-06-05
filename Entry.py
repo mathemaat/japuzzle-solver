@@ -19,3 +19,11 @@ class Entry(object):
     else:
       return '%d [%2d - %2d]' % (self.value, self.minStart, self.maxEnd)
 
+  def solve(self):
+    width = self.maxEnd - self.minStart + 1
+    if width < 2 * self.value:
+      overlap = 2 * self.value - width
+      start = self.minStart + self.value - overlap
+      end   = start + overlap - 1
+      self.Slice.fillRange(start, end)
+

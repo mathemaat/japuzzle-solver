@@ -11,6 +11,8 @@ class Slice(object):
     self.determineHints()
     self.initialiseEntries()
 
+    self.updateRepresentation()
+
   def determineLength(self):
     if self.orientation == 'h':
       self.length = self.Puzzle.width
@@ -38,4 +40,29 @@ class Slice(object):
         maxEndPositions.insert(0, maxEndPositions[0] - self.hints[count-n] - 1)
     for n in xrange(count):
       self.entries[n].setBoundaries(minStartPositions[n], maxEndPositions[n])
+
+  def updateRepresentation(self):
+    if self.orientation == 'h':
+      self.representation = self.Puzzle.Grid.getRow(self.index)
+    else:
+      self.representation = self.Puzzle.Grid.getColumn(self.index)
+
+  def updateGrid(self):
+    if self.orientation == 'h':
+      for i, cell in enumerate(self.representation):
+        self.Puzzle.Grid.setCell(self.index, i, cell)
+    else:
+      for i, cell in enumerate(self.representation):
+        self.Puzzle.Grid.setCell(i, self.index, cell)
+
+  def solve(self):
+    for Entry in self.entries:
+      Entry.solve()
+    self.updateGrid()
+
+  def fillRange(self, start, end):
+    i = start
+    while i <= end:
+      self.representation[i] = 1
+      i += 1
 

@@ -42,5 +42,6 @@ columnHints = [
 ]
 
 Puzzle = Puzzle(rowHints, columnHints)
-Puzzle.view(3, 2)
+Puzzle.solve()
+Puzzle.view(1, 1)
 
