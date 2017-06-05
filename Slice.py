@@ -2,12 +2,13 @@ from Entry import Entry
 
 class Slice(object):
 
-  def __init__(self, Puzzle, orientation, hints):
+  def __init__(self, Puzzle, orientation, index):
     self.Puzzle = Puzzle
     self.orientation = orientation
-    self.hints = hints
+    self.index = index
 
     self.determineLength()
+    self.determineHints()
     self.initialiseEntries()
 
   def determineLength(self):
@@ -15,6 +16,12 @@ class Slice(object):
       self.length = self.Puzzle.width
     else:
       self.length = self.Puzzle.height
+
+  def determineHints(self):
+    if self.orientation == 'h':
+      self.hints = self.Puzzle.rows[self.index]
+    else:
+      self.hints = self.Puzzle.columns[self.index]
 
   def initialiseEntries(self):
     self.entries = [Entry(self, hint) for hint in self.hints]

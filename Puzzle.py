@@ -15,8 +15,8 @@ class Puzzle(object):
 
     self.validate()
 
-    self.rowSlices    = [Slice(self, 'h', r) for r in rows]
-    self.columnSlices = [Slice(self, 'v', c) for c in columns]
+    self.rowSlices    = [Slice(self, 'h', i) for i, row in enumerate(rows)]
+    self.columnSlices = [Slice(self, 'v', i) for i, column in enumerate(columns)]
 
   def validate(self):
     self.validateRows()
