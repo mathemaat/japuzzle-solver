@@ -1,5 +1,6 @@
 from Entry import Entry
 from Grid import Grid
+from Slice import Slice
 
 class Puzzle(object):
 
@@ -14,8 +15,8 @@ class Puzzle(object):
 
     self.validate()
 
-    self.rowEntries    = self.objectifyRows(self.rows,    self.width)
-    self.columnEntries = self.objectifyRows(self.columns, self.height)
+    self.rowSlices    = [Slice(self, 'h', r) for r in rows]
+    self.columnSlices = [Slice(self, 'v', c) for c in columns]
 
   def validate(self):
     self.validateRows()
@@ -44,27 +45,6 @@ class Puzzle(object):
         span = total + length - 1
         if span > self.height:
           raise Exception('Span of column %d is %d (max is %d)' % (i, span, self.height))
-
-  @staticmethod
-  def objectifyRows(rows, length):
-    entries = []
-    for row in rows:
-      entries.append([Entry(i) for i in row])
-
-    for i, row in enumerate(rows):
-      minStartPositions = []
-      maxEndPositions = []
-      count = len(row)
-      for n in xrange(count):
-        if n == 0:
-          minStartPositions.append(0)
-          maxEndPositions.insert(0, length - 1)
-        else:
-          minStartPositions.append(minStartPositions[n-1] + row[n-1] + 1)
-          maxEndPositions.insert(0, maxEndPositions[0] - row[count-n] - 1)
-      for n in xrange(count):
-        entries[i][n].setBoundaries(minStartPositions[n], maxEndPositions[n])
-    return entries
 
   def getRowMatrix(self):
     rowMatrix = [None] * self.height
