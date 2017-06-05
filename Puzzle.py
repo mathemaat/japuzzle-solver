@@ -97,11 +97,11 @@ class Puzzle(object):
     offset = cellWidth * len(rowMatrix[0])
     for row in columnMatrix:
       line = ''
-      for entry in row:
-        if entry == None:
+      for hint in row:
+        if hint == None:
           line += ' ' * cellWidth
         else:
-          line += (' ' * cellWidth + str(entry))[-cellWidth:]
+          line += (' ' * cellWidth + str(hint))[-cellWidth:]
       line = lineFormat % (' ' * offset, line)
       print line
 
@@ -110,11 +110,11 @@ class Puzzle(object):
 
     for i, row in enumerate(rowMatrix):
       line1 = ''
-      for entry in row:
-        if entry == None:
+      for hint in row:
+        if hint == None:
           line1 += ' ' * cellWidth
         else:
-          line1 += (' ' * cellWidth + str(entry))[-cellWidth:]
+          line1 += (' ' * cellWidth + str(hint))[-cellWidth:]
       line2 = ' ' * offset
 
       fill = ''

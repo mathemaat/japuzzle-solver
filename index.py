@@ -1,6 +1,6 @@
 from Puzzle import Puzzle
 
-rowEntries = [
+rowHints = [
   [6],
   [3, 4],
   [2, 2],
@@ -23,7 +23,7 @@ rowEntries = [
   [4, 2, 5]
 ]
 
-columnEntries = [
+columnHints = [
   [6, 2, 1, 1],
   [3, 4, 3],
   [2, 6, 2],
@@ -41,6 +41,6 @@ columnEntries = [
   [5, 1]
 ]
 
-puzzle = Puzzle(rowEntries, columnEntries)
-puzzle.view(3, 2)
+Puzzle = Puzzle(rowHints, columnHints)
+Puzzle.view(3, 2)
 
