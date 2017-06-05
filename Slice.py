@@ -17,7 +17,7 @@ class Slice(object):
       self.length = self.Puzzle.height
 
   def initialiseEntries(self):
-    self.entries = [Entry(hint) for hint in self.hints]
+    self.entries = [Entry(self, hint) for hint in self.hints]
 
     minStartPositions = []
     maxEndPositions = []

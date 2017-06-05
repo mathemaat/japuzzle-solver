@@ -1,7 +1,8 @@
 
 class Entry(object):
 
-  def __init__(self, value):
+  def __init__(self, Slice, value):
+    self.Slice = Slice
     self.value = value
 
     # its position is bounded by minStart and maxEnd
