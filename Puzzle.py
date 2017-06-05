@@ -53,8 +53,8 @@ class Puzzle(object):
       if total == 0:
         rowMatrix[i] = [0]
       else:
-        rowMatrix[i] = self.rows[i]
-    
+        rowMatrix[i] = list(self.rows[i])
+
     maxLength = self.getMaxRowLength(rowMatrix)
     for i in xrange(len(rowMatrix)):
       while len(rowMatrix[i]) < maxLength:
@@ -69,8 +69,8 @@ class Puzzle(object):
       if total == 0:
         columnMatrix[i] = [0]
       else:
-        columnMatrix[i] = self.columns[i]
-    
+        columnMatrix[i] = list(self.columns[i])
+
     maxLength = self.getMaxRowLength(columnMatrix)
     for i in xrange(len(columnMatrix)):
       while len(columnMatrix[i]) < maxLength:
