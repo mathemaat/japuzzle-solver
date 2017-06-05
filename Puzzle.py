@@ -61,7 +61,7 @@ class Puzzle(object):
           maxEndPositions.insert(0, length - 1)
         else:
           minStartPositions.append(minStartPositions[n-1] + row[n-1] + 1)
-          maxEndPositions.insert(0, maxEndPositions[0] - row[count-n-1] - 1)
+          maxEndPositions.insert(0, maxEndPositions[0] - row[count-n] - 1)
       for n in xrange(count):
         entries[i][n].setBoundaries(minStartPositions[n], maxEndPositions[n])
     return entries
