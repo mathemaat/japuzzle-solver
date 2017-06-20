@@ -50,10 +50,12 @@ class Slice(object):
   def updateGrid(self):
     if self.orientation == 'h':
       for i, cell in enumerate(self.representation):
-        self.Puzzle.Grid.setCell(self.index, i, cell)
+        if cell != None:
+          self.Puzzle.Grid.setCell(self.index, i, cell)
     else:
       for i, cell in enumerate(self.representation):
-        self.Puzzle.Grid.setCell(i, self.index, cell)
+        if cell != None:
+          self.Puzzle.Grid.setCell(i, self.index, cell)
 
   def solve(self):
     for Entry in self.entries:
