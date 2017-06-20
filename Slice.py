@@ -26,7 +26,7 @@ class Slice(object):
       self.hints = self.Puzzle.columns[self.index]
 
   def initialiseEntries(self):
-    self.entries = [Entry(self, hint) for hint in self.hints]
+    self.entries = [Entry(self, i, hint) for i, hint in enumerate(self.hints)]
 
     minStartPositions = []
     maxEndPositions = []
