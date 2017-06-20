@@ -62,9 +62,12 @@ class Slice(object):
       Entry.solve()
     self.updateGrid()
 
-  def fillRange(self, start, end):
+  def setCell(self, index, value):
+    self.setRange(index, index, value)
+
+  def setRange(self, start, end, value):
     i = start
     while i <= end:
-      self.representation[i] = 1
+      self.representation[i] = value
       i += 1
 

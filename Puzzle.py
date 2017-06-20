@@ -141,4 +141,8 @@ class Puzzle(object):
       Slice.solve()
     for Slice in self.columnSlices:
       Slice.solve()
+    for Slice in self.rowSlices:
+      Slice.updateRepresentation()
+    for Slice in self.columnSlices:
+      Slice.updateRepresentation()
 

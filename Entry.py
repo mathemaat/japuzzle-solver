@@ -10,9 +10,7 @@ class Entry(object):
     self.minStart = None
     self.maxEnd   = None
 
-  def setBoundaries(self, minStart, maxEnd):
-    self.minStart = minStart
-    self.maxEnd   = maxEnd
+    self.isSolved = False
 
   def __repr__(self):
     if self.minStart == None:
@@ -20,11 +18,74 @@ class Entry(object):
     else:
       return '%d [%2d - %2d]' % (self.value, self.minStart, self.maxEnd)
 
+  def setBoundaries(self, minStart, maxEnd):
+    self.minStart = minStart
+    self.maxEnd   = maxEnd
+
+  def getIsSolved(self):
+    return self.isSolved
+
+  def setIsSolved(self):
+    self.isSolved = self.maxEnd - self.minStart + 1 == self.value
+
   def solve(self):
+    if self.getIsSolved() == False:
+      self.narrow()
+      self.colorCells()
+
+  def narrow(self):
+    if self.canIgnorePrevious() and self.Slice.representation[self.minStart] == 1:
+      self.maxEnd = self.minStart + self.value - 1
+      self.setIsSolved()
+      return
+
+    if self.canIgnoreNext() and self.Slice.representation[self.maxEnd] == 1:
+      self.minStart = self.maxEnd - self.value + 1
+      self.setIsSolved()
+      return
+
+    representationAtStart = self.Slice.representation[self.minStart:self.minStart+self.value]
+    if 0 in representationAtStart:
+      lastIndex = self.lastIndex(representationAtStart, 0)
+      self.minStart += lastIndex + 1
+
+    representationAtEnd = self.Slice.representation[self.maxEnd-self.value+1:self.maxEnd+1]
+    if 0 in representationAtEnd:
+      firstIndex = self.firstIndex(representationAtEnd, 0)
+      self.maxEnd -= self.value - firstIndex
+
+    self.setIsSolved()
+
+  def canIgnorePrevious(self):
+    if self.index == 0:
+      return True
+    previousEntry = self.Slice.entries[self.index - 1]
+    return previousEntry.getIsSolved() and previousEntry.maxEnd < self.minStart
+
+  def canIgnoreNext(self):
+    if self.index == len(self.Slice.entries) - 1:
+      return True
+    nextEntry = self.Slice.entries[self.index + 1]
+    return nextEntry.getIsSolved() and nextEntry.minStart > self.maxEnd
+
+  @staticmethod
+  def firstIndex(l, value):
+    return l.index(value)
+
+  @staticmethod
+  def lastIndex(l, value):
+    return len(l) - 1 - l[::-1].index(value)
+
+  def colorCells(self):
     width = self.maxEnd - self.minStart + 1
     if width < 2 * self.value:
       overlap = 2 * self.value - width
       start = self.minStart + self.value - overlap
       end   = start + overlap - 1
-      self.Slice.fillRange(start, end)
+      self.Slice.setRange(start, end, 1)
+    if self.getIsSolved():
+      if self.minStart > 0:
+        self.Slice.setCell(self.minStart - 1, 0)
+      if self.maxEnd < self.Slice.length - 1:
+        self.Slice.setCell(self.maxEnd + 1, 0)
 
