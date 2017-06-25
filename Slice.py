@@ -60,6 +60,7 @@ class Slice(object):
   def solve(self):
     self.solveEntries()
     self.cascadeTranslations()
+    self.locateGaps()
     self.updateGrid()
 
   def solveEntries(self):
@@ -78,6 +79,14 @@ class Slice(object):
       offset = max(Entry.initialMaxEnd - Entry.maxEnd, offset)
       if not Entry.getIsSolved():
         Entry.maxEnd -= offset - (Entry.initialMaxEnd - Entry.maxEnd)
+
+  def locateGaps(self):
+    previousEnd = -1
+    for Entry in self.entries:
+      self.setRange(previousEnd + 1, Entry.minStart - 1, 0)
+      previousEnd = Entry.maxEnd
+    if previousEnd < self.length - 1:
+      self.setRange(previousEnd + 1, self.length - 1, 0)
 
   def setCell(self, index, value):
     self.setRange(index, index, value)
