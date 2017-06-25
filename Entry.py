@@ -59,13 +59,17 @@ class Entry(object):
         self.maxEnd -= 1
 
   def narrowIfNearbyZeroes(self):
-    representationAtStart = self.Slice.representation[self.minStart:self.minStart+self.value]
-    if 0 in representationAtStart:
+    while True:
+      representationAtStart = self.Slice.representation[self.minStart:self.minStart+self.value]
+      if 0 not in representationAtStart:
+        break
       lastIndex = self.lastIndex(representationAtStart, 0)
       self.minStart += lastIndex + 1
 
-    representationAtEnd = self.Slice.representation[self.maxEnd-self.value+1:self.maxEnd+1]
-    if 0 in representationAtEnd:
+    while True:
+      representationAtEnd = self.Slice.representation[self.maxEnd-self.value+1:self.maxEnd+1]
+      if 0 not in representationAtEnd:
+        break
       firstIndex = self.firstIndex(representationAtEnd, 0)
       self.maxEnd -= self.value - firstIndex
 
