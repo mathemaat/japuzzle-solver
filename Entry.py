@@ -39,10 +39,16 @@ class Entry(object):
       self.narrowIfNearbyZeroes()
 
   def narrowIfEdgeCase(self):
-    if self.canIgnorePrevious() and self.Slice.representation[self.minStart] == 1:
-      self.maxEnd = self.minStart + self.value - 1
-    if self.canIgnoreNext() and self.Slice.representation[self.maxEnd] == 1:
-      self.minStart = self.maxEnd - self.value + 1
+    if self.canIgnorePrevious():
+      if self.Slice.representation[self.minStart] == 1:
+        self.maxEnd = self.minStart + self.value - 1
+      elif self.Slice.representation[self.minStart + self.value] == 1:
+        self.minStart += 1
+    if self.canIgnoreNext():
+      if self.Slice.representation[self.maxEnd] == 1:
+        self.minStart = self.maxEnd - self.value + 1
+      elif self.Slice.representation[self.maxEnd - self.value] == 1:
+        self.maxEnd -= 1
 
   def narrowIfNearbyZeroes(self):
     representationAtStart = self.Slice.representation[self.minStart:self.minStart+self.value]
