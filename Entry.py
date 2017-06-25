@@ -37,7 +37,9 @@ class Entry(object):
     self.colorCells()
 
   def narrow(self):
-    self.narrowIfEdgeCase()
+    self.checkIfSolved()
+    if not self.getIsSolved():
+      self.narrowIfEdgeCase()
     self.checkIfSolved()
     if not self.getIsSolved():
       self.narrowIfNearbyZeroes()
@@ -46,11 +48,13 @@ class Entry(object):
     if self.canIgnorePrevious():
       if self.Slice.representation[self.minStart] == 1:
         self.maxEnd = self.minStart + self.value - 1
+        return
       elif self.Slice.representation[self.minStart + self.value] == 1:
         self.minStart += 1
     if self.canIgnoreNext():
       if self.Slice.representation[self.maxEnd] == 1:
         self.minStart = self.maxEnd - self.value + 1
+        return
       elif self.Slice.representation[self.maxEnd - self.value] == 1:
         self.maxEnd -= 1
 
