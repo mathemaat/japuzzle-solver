@@ -25,25 +25,26 @@ class Entry(object):
   def getIsSolved(self):
     return self.isSolved
 
-  def setIsSolved(self):
+  def checkIfSolved(self):
     self.isSolved = self.maxEnd - self.minStart + 1 == self.value
 
   def solve(self):
-    if self.getIsSolved() == False:
-      self.narrow()
-      self.colorCells()
+    self.narrow()
+    self.colorCells()
 
   def narrow(self):
+    self.narrowIfEdgeCase()
+    self.checkIfSolved()
+    if not self.getIsSolved():
+      self.narrowIfNearbyZeroes()
+
+  def narrowIfEdgeCase(self):
     if self.canIgnorePrevious() and self.Slice.representation[self.minStart] == 1:
       self.maxEnd = self.minStart + self.value - 1
-      self.setIsSolved()
-      return
-
     if self.canIgnoreNext() and self.Slice.representation[self.maxEnd] == 1:
       self.minStart = self.maxEnd - self.value + 1
-      self.setIsSolved()
-      return
 
+  def narrowIfNearbyZeroes(self):
     representationAtStart = self.Slice.representation[self.minStart:self.minStart+self.value]
     if 0 in representationAtStart:
       lastIndex = self.lastIndex(representationAtStart, 0)
@@ -53,8 +54,6 @@ class Entry(object):
     if 0 in representationAtEnd:
       firstIndex = self.firstIndex(representationAtEnd, 0)
       self.maxEnd -= self.value - firstIndex
-
-    self.setIsSolved()
 
   def canIgnorePrevious(self):
     if self.index == 0:
