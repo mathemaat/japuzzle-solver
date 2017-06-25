@@ -101,12 +101,12 @@ class Entry(object):
     return nextEntry.getIsSolved() and nextEntry.minStart > self.maxEnd
 
   @staticmethod
-  def firstIndex(l, value):
-    return l.index(value)
+  def firstIndex(li, value):
+    return li.index(value)
 
   @staticmethod
-  def lastIndex(l, value):
-    return len(l) - 1 - l[::-1].index(value)
+  def lastIndex(li, value):
+    return len(li) - 1 - li[::-1].index(value)
 
   def colorCells(self):
     width = self.maxEnd - self.minStart + 1
