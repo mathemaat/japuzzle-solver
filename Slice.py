@@ -59,7 +59,8 @@ class Slice(object):
 
   def solve(self):
     for Entry in self.entries:
-      Entry.solve()
+      if not Entry.getIsSolved():
+        Entry.solve()
     self.updateGrid()
 
   def setCell(self, index, value):
