@@ -39,7 +39,7 @@ class Slice(object):
         minStartPositions.append(minStartPositions[n-1] + self.hints[n-1] + 1)
         maxEndPositions.insert(0, maxEndPositions[0] - self.hints[count-n] - 1)
     for n in xrange(count):
-      self.entries[n].setBoundaries(minStartPositions[n], maxEndPositions[n])
+      self.entries[n].initialiseBoundaries(minStartPositions[n], maxEndPositions[n])
 
   def updateRepresentation(self):
     if self.orientation == 'h':
@@ -58,10 +58,26 @@ class Slice(object):
           self.Puzzle.Grid.setCell(i, self.index, cell)
 
   def solve(self):
+    self.solveEntries()
+    self.cascadeTranslations()
+    self.updateGrid()
+
+  def solveEntries(self):
     for Entry in self.entries:
       if not Entry.getIsSolved():
         Entry.solve()
-    self.updateGrid()
+
+  def cascadeTranslations(self):
+    offset = 0
+    for Entry in self.entries:
+      offset = max(Entry.minStart - Entry.initialMinStart, offset)
+      if not Entry.getIsSolved():
+        Entry.minStart += offset - (Entry.minStart - Entry.initialMinStart)
+    offset = 0
+    for Entry in self.entries[::-1]:
+      offset = max(Entry.initialMaxEnd - Entry.maxEnd, offset)
+      if not Entry.getIsSolved():
+        Entry.maxEnd -= offset - (Entry.initialMaxEnd - Entry.maxEnd)
 
   def setCell(self, index, value):
     self.setRange(index, index, value)

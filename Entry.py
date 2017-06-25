@@ -7,8 +7,10 @@ class Entry(object):
     self.value = value
 
     # its position is bounded by minStart and maxEnd
-    self.minStart = None
-    self.maxEnd   = None
+    self.initialMinStart = None
+    self.initialMaxEnd   = None
+    self.minStart        = None
+    self.maxEnd          = None
 
     self.isSolved = False
 
@@ -18,9 +20,11 @@ class Entry(object):
     else:
       return '%d [%2d - %2d]' % (self.value, self.minStart, self.maxEnd)
 
-  def setBoundaries(self, minStart, maxEnd):
-    self.minStart = minStart
-    self.maxEnd   = maxEnd
+  def initialiseBoundaries(self, minStart, maxEnd):
+    self.initialMinStart = minStart
+    self.initialMaxEnd   = maxEnd
+    self.minStart        = minStart
+    self.maxEnd          = maxEnd
 
   def getIsSolved(self):
     return self.isSolved
