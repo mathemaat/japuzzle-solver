@@ -43,6 +43,9 @@ class Entry(object):
     self.checkIfSolved()
     if not self.getIsSolved():
       self.narrowIfNearbyZeroes()
+    self.checkIfSolved()
+    if not self.getIsSolved():
+      self.determineRadius()
 
   def narrowIfEdgeCase(self):
     if self.canIgnorePrevious():
@@ -81,6 +84,15 @@ class Entry(object):
         break
       firstIndex = self.firstIndex(representationAtEnd, 0)
       self.maxEnd -= self.value - firstIndex
+
+  def determineRadius(self):
+    if self.canIgnorePrevious() and self.canIgnoreNext():
+      representation = self.Slice.representation[self.minStart:self.maxEnd+1]
+      if 1 in representation:
+        firstOne  = self.firstIndex(representation, 1)
+        lastOne   = self.lastIndex(representation, 1)
+        self.minStart = max(self.minStart, self.minStart + lastOne - self.value + 1)
+        self.maxEnd   = min(self.maxEnd,   self.minStart + firstOne + self.value - 1)
 
   def canIgnorePrevious(self):
     if self.index == 0:
