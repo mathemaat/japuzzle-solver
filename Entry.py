@@ -43,9 +43,6 @@ class Entry(object):
     self.checkIfSolved()
     if not self.getIsSolved():
       self.narrowIfNearbyZeroes()
-    self.checkIfSolved()
-    if not self.getIsSolved():
-      self.extendNearbyOnes()
 
   def narrowIfEdgeCase(self):
     if self.canIgnorePrevious():
@@ -54,12 +51,22 @@ class Entry(object):
         return
       elif self.Slice.representation[self.minStart + self.value] == 1:
         self.minStart += 1
+      else:
+        representationAtStart = self.Slice.representation[self.minStart:self.minStart+self.value]
+        if 1 in representationAtStart:
+          firstIndex = self.firstIndex(representationAtStart, 1)
+          self.maxEnd = min(self.minStart + firstIndex + self.value - 1, self.maxEnd)
     if self.canIgnoreNext():
       if self.Slice.representation[self.maxEnd] == 1:
         self.minStart = self.maxEnd - self.value + 1
         return
       elif self.Slice.representation[self.maxEnd - self.value] == 1:
         self.maxEnd -= 1
+      else:
+        representationAtEnd = self.Slice.representation[self.maxEnd-self.value+1:self.maxEnd+1]
+        if 1 in representationAtEnd:
+          lastIndex = self.firstIndex(representationAtEnd[::-1], 1)
+          self.minStart = max(self.maxEnd - lastIndex - self.value + 1, self.minStart)
 
   def narrowIfNearbyZeroes(self):
     while True:
@@ -75,18 +82,6 @@ class Entry(object):
         break
       firstIndex = self.firstIndex(representationAtEnd, 0)
       self.maxEnd -= self.value - firstIndex
-
-  def extendNearbyOnes(self):
-    if self.canIgnorePrevious():
-      representationAtStart = self.Slice.representation[self.minStart:self.minStart+self.value]
-      if 1 in representationAtStart:
-        firstIndex = self.firstIndex(representationAtStart, 1)
-        self.maxEnd = min(self.minStart + firstIndex + self.value - 1, self.maxEnd)
-    if self.canIgnoreNext():
-      representationAtEnd = self.Slice.representation[self.maxEnd-self.value+1:self.maxEnd+1]
-      if 1 in representationAtEnd:
-        lastIndex = self.firstIndex(representationAtEnd[::-1], 1)
-        self.minStart = max(self.maxEnd - lastIndex - self.value + 1, self.minStart)
 
   def canIgnorePrevious(self):
     if self.index == 0:
