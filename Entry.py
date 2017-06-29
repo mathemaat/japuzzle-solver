@@ -75,7 +75,6 @@ class Entry(object):
         break
       lastIndex = self.lastIndex(representationAtStart, 0)
       self.minStart += lastIndex + 1
-
     while True:
       representationAtEnd = self.Slice.representation[self.maxEnd-self.value+1:self.maxEnd+1]
       if 0 not in representationAtEnd:
