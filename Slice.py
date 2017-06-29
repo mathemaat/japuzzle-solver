@@ -65,8 +65,7 @@ class Slice(object):
 
   def solveEntries(self):
     for Entry in self.entries:
-      if not Entry.getIsSolved():
-        Entry.solve()
+      Entry.solve()
 
   def cascadeTranslations(self):
     offset = 0
