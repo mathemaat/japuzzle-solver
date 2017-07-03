@@ -60,6 +60,7 @@ class Slice(object):
   def solve(self):
     self.solveEntries()
     self.cascadeTranslations()
+    self.locateIslands()
     self.locateGaps()
     self.updateGrid()
 
@@ -78,6 +79,46 @@ class Slice(object):
       offset = max(Entry.initialMaxEnd - Entry.maxEnd, offset)
       if not Entry.getIsSolved():
         Entry.maxEnd -= offset - (Entry.initialMaxEnd - Entry.maxEnd)
+
+  def locateIslands(self):
+    i = -1
+    while i < self.length - 1 and self.representation[i+1] == 0:
+      i += 1
+    if i < self.length - 1:
+      for Entry in self.entries:
+        if Entry.getIsSolved():
+          i = Entry.maxEnd + 1
+        else:
+          representation = self.representation[i+1:]
+          if 1 in representation:
+            firstIndex = Entry.firstIndex(representation, 1)
+            Entry.maxEnd = min(Entry.maxEnd, i + firstIndex + Entry.value)
+            i += firstIndex + Entry.value
+            while i < self.length - 1 and self.representation[i+1] == 1:
+              i += 1
+          else:
+            i = self.length - 1
+        if i >= self.length - 1:
+          break
+    i = self.length
+    while i > 0 and self.representation[i-1] == 0:
+      i -= 1
+    if i > 0:
+      for Entry in self.entries[::-1]:
+        if Entry.getIsSolved():
+          i = Entry.minStart - 1
+        else:
+          representation = self.representation[:i]
+          if 1 in representation:
+            firstIndex = Entry.firstIndex(representation[::-1], 1)
+            Entry.minStart = max(Entry.minStart, i - firstIndex - Entry.value)
+            i -= firstIndex + Entry.value
+            while i > 0 and self.representation[i-1] == 1:
+              i -= 1
+          else:
+            i = 0
+        if i <= 0:
+          break
 
   def locateGaps(self):
     previousEnd = -1
