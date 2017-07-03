@@ -98,13 +98,13 @@ class Entry(object):
     if self.index == 0:
       return True
     previousEntry = self.Slice.entries[self.index - 1]
-    return previousEntry.getIsSolved() and previousEntry.maxEnd < self.minStart
+    return previousEntry.maxEnd < self.minStart
 
   def canIgnoreNext(self):
     if self.index == len(self.Slice.entries) - 1:
       return True
     nextEntry = self.Slice.entries[self.index + 1]
-    return nextEntry.getIsSolved() and nextEntry.minStart > self.maxEnd
+    return nextEntry.minStart > self.maxEnd
 
   @staticmethod
   def firstIndex(li, value):
