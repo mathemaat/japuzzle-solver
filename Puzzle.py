@@ -19,6 +19,8 @@ class Puzzle(object):
     self.slices += [Slice(self, 'h', i) for i, row in enumerate(rows)]
     self.slices += [Slice(self, 'v', i) for i, column in enumerate(columns)]
 
+    self.iteration = 0
+
   def validate(self):
     self.validateRows()
     self.validateColumns()
@@ -138,9 +140,12 @@ class Puzzle(object):
     print border
 
   def solve(self):
-    for Slice in self.slices:
-      Slice.solve()
-    # don't update representation of slices until all slices are evaluated
-    for Slice in self.slices:
-      Slice.updateRepresentation()
+    self.iteration = 1
+    while self.iteration < 100:
+      for Slice in self.slices:
+        Slice.solve()
+      # don't update representation of slices until all slices are evaluated
+      for Slice in self.slices:
+        Slice.updateRepresentation()
+      self.iteration += 1
 
