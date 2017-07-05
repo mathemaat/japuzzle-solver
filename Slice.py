@@ -73,12 +73,12 @@ class Slice(object):
     for Entry in self.entries:
       offset = max(Entry.minStart - Entry.initialMinStart, offset)
       if not Entry.getIsSolved():
-        Entry.minStart += offset - (Entry.minStart - Entry.initialMinStart)
+        Entry.minStart = Entry.initialMinStart + offset
     offset = 0
     for Entry in self.entries[::-1]:
       offset = max(Entry.initialMaxEnd - Entry.maxEnd, offset)
       if not Entry.getIsSolved():
-        Entry.maxEnd -= offset - (Entry.initialMaxEnd - Entry.maxEnd)
+        Entry.maxEnd = Entry.initialMaxEnd - offset
 
   def locateIslands(self):
     i = -1
