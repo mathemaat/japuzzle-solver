@@ -94,17 +94,25 @@ class Entry(object):
         self.minStart = max(self.minStart, self.minStart + lastOne - self.value + 1)
         self.maxEnd   = min(self.maxEnd,   self.minStart + firstOne + self.value - 1)
 
-  def canIgnorePrevious(self):
+  def getPreviousEntry(self):
     if self.index == 0:
-      return True
-    previousEntry = self.Slice.entries[self.index - 1]
-    return previousEntry.maxEnd < self.minStart
+      return None
+    else:
+      return self.Slice.entries[self.index - 1]
+
+  def getNextEntry(self):
+    if self.index == len(self.Slice.entries) - 1:
+      return None
+    else:
+      return self.Slice.entries[self.index + 1]
+
+  def canIgnorePrevious(self):
+    previousEntry = self.getPreviousEntry()
+    return previousEntry == None or previousEntry.maxEnd < self.minStart
 
   def canIgnoreNext(self):
-    if self.index == len(self.Slice.entries) - 1:
-      return True
-    nextEntry = self.Slice.entries[self.index + 1]
-    return nextEntry.minStart > self.maxEnd
+    nextEntry = self.getNextEntry()
+    return nextEntry == None or nextEntry.minStart > self.maxEnd
 
   @staticmethod
   def firstIndex(li, value):
