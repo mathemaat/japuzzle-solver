@@ -25,18 +25,18 @@ class Slice(object):
       entryValues = self.Puzzle.columns[self.index]
 
     self.entries = [Entry(self, i, value) for i, value in enumerate(entryValues)]
+    self.numberOfEntries = len(self.entries)
 
     minStartPositions = []
     maxEndPositions = []
-    count = len(entryValues)
-    for n in xrange(count):
+    for n in xrange(self.numberOfEntries):
       if n == 0:
         minStartPositions.append(0)
         maxEndPositions.insert(0, self.length - 1)
       else:
         minStartPositions.append(minStartPositions[n-1] + entryValues[n-1] + 1)
-        maxEndPositions.insert(0, maxEndPositions[0] - entryValues[count-n] - 1)
-    for n in xrange(count):
+        maxEndPositions.insert(0, maxEndPositions[0] - entryValues[self.numberOfEntries-n] - 1)
+    for n in xrange(self.numberOfEntries):
       self.entries[n].initialiseBoundaries(minStartPositions[n], maxEndPositions[n])
 
   def updateRepresentation(self):

@@ -101,7 +101,7 @@ class Entry(object):
       return self.Slice.entries[self.index - 1]
 
   def getNextEntry(self):
-    if self.index == len(self.Slice.entries) - 1:
+    if self.index == self.Slice.numberOfEntries - 1:
       return None
     else:
       return self.Slice.entries[self.index + 1]
