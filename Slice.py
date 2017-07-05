@@ -8,7 +8,6 @@ class Slice(object):
     self.index = index
 
     self.determineLength()
-    self.determineHints()
     self.initialiseEntries()
 
     self.updateRepresentation()
@@ -19,25 +18,24 @@ class Slice(object):
     else:
       self.length = self.Puzzle.height
 
-  def determineHints(self):
-    if self.orientation == 'h':
-      self.hints = self.Puzzle.rows[self.index]
-    else:
-      self.hints = self.Puzzle.columns[self.index]
-
   def initialiseEntries(self):
-    self.entries = [Entry(self, i, hint) for i, hint in enumerate(self.hints)]
+    if self.orientation == 'h':
+      entryValues = self.Puzzle.rows[self.index]
+    else:
+      entryValues = self.Puzzle.columns[self.index]
+
+    self.entries = [Entry(self, i, value) for i, value in enumerate(entryValues)]
 
     minStartPositions = []
     maxEndPositions = []
-    count = len(self.hints)
+    count = len(entryValues)
     for n in xrange(count):
       if n == 0:
         minStartPositions.append(0)
         maxEndPositions.insert(0, self.length - 1)
       else:
-        minStartPositions.append(minStartPositions[n-1] + self.hints[n-1] + 1)
-        maxEndPositions.insert(0, maxEndPositions[0] - self.hints[count-n] - 1)
+        minStartPositions.append(minStartPositions[n-1] + entryValues[n-1] + 1)
+        maxEndPositions.insert(0, maxEndPositions[0] - entryValues[count-n] - 1)
     for n in xrange(count):
       self.entries[n].initialiseBoundaries(minStartPositions[n], maxEndPositions[n])
 
