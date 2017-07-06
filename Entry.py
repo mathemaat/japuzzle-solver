@@ -42,6 +42,9 @@ class Entry(object):
       self.narrowIfEdgeCase()
     self.checkIfSolved()
     if not self.getIsSolved():
+      self.narrowIfTouchingAOne()
+    self.checkIfSolved()
+    if not self.getIsSolved():
       self.narrowIfNearbyZeroes()
     self.checkIfSolved()
     if not self.getIsSolved():
@@ -70,6 +73,12 @@ class Entry(object):
         if 1 in representationAtEnd:
           lastIndex = self.firstIndex(representationAtEnd[::-1], 1)
           self.minStart = max(self.maxEnd - lastIndex - self.value + 1, self.minStart)
+
+  def narrowIfTouchingAOne(self):
+    if self.maxEnd < self.Slice.length - 1 and self.Slice.representation[self.maxEnd + 1] == 1:
+      self.maxEnd -= 1
+    if self.minStart > 0 and self.Slice.representation[self.minStart - 1] == 1:
+      self.minStart += 1
 
   def narrowIfNearbyZeroes(self):
     while True:
