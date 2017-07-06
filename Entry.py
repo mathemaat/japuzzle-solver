@@ -15,10 +15,7 @@ class Entry(object):
     self.isSolved = False
 
   def __repr__(self):
-    if self.minStart == None:
-      return str(self.value)
-    else:
-      return '%d [%2d - %2d]' % (self.value, self.minStart, self.maxEnd)
+    return '%d [%2d - %2d]' % (self.value, self.minStart, self.maxEnd)
 
   def initialiseBoundaries(self, minStart, maxEnd):
     self.initialMinStart = minStart
