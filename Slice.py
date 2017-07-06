@@ -12,6 +12,9 @@ class Slice(object):
 
     self.updateRepresentation()
 
+  def __repr__(self):
+    return '%02d%s %s' % (self.index, self.orientation, self.representation)
+
   def determineLength(self):
     if self.orientation == 'h':
       self.length = self.Puzzle.width
