@@ -61,6 +61,7 @@ class Slice(object):
   def solve(self):
     self.solveEntries()
     self.cascadeTranslations()
+#    self.considerSeriesOfOnes()
     self.locateIslands()
     self.locateGaps()
     self.updateGrid()
@@ -80,6 +81,44 @@ class Slice(object):
       offset = max(Entry.initialMaxEnd - Entry.maxEnd, offset)
       if not Entry.getIsSolved():
         Entry.maxEnd = Entry.initialMaxEnd - offset
+
+  def considerSeriesOfOnes(self):
+    if self.getDebugKey() != '16v':
+      return
+#    print self.getShortRepresentation()
+#    print self.entries
+    i = 0
+    while i < self.numberOfEntries:
+      if self.entries[i].getIsSolved() or self.entries[i].value != 1:
+        i += 1
+      else:
+        numberOfOnes = 1
+        while (i+numberOfOnes < self.numberOfEntries
+            and not self.entries[i+numberOfOnes].getIsSolved()
+            and self.entries[i+numberOfOnes].value == 1):
+          numberOfOnes += 1
+        fieldsToEvaluate   = 2*numberOfOnes
+        fieldsYetEvaluated = 0
+        pos = self.entries[i].minStart
+#        print pos, '%d/%d' % (fieldsYetEvaluated, fieldsToEvaluate)
+        while fieldsYetEvaluated < fieldsToEvaluate and pos < self.length:
+#          print 'Info:', pos, fieldsYetEvaluated, fieldsToEvaluate
+          fieldsYetEvaluated += self.representation[pos] != 0
+          if self.representation[pos] == 1:
+            if pos - 1 >= 0:
+              self.setCell(pos - 1, 0)
+            if pos + 1 < self.length:
+              fieldsYetEvaluated += self.representation[pos+1] == None
+              self.setCell(pos + 1, 0)
+          pos += 1
+#        print self.getShortRepresentation()
+#        print pos, '%d/%d' % (fieldsYetEvaluated, fieldsToEvaluate)
+#        print self.representation[pos], self.representation[pos+1]
+        if (pos < self.length
+            and self.representation[pos-1] == None
+            and self.representation[pos] == 1):
+          self.setCell(pos - 1, 0)
+        i += numberOfOnes
 
   def locateIslands(self):
     i = -1
@@ -137,4 +176,15 @@ class Slice(object):
     while i <= end:
       self.representation[i] = value
       i += 1
+
+  def getShortRepresentation(self):
+    s = ''
+    for i in xrange(self.length):
+      if self.representation[i] == None:
+        s += ' '
+      else:
+        s += str(self.representation[i])
+      if (i+1) % 5 == 0 and i+1 != self.length:
+        s += '|'
+    return '[' + s + ']'
 
