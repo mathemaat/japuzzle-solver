@@ -1,4 +1,3 @@
-from Entry import Entry
 from Grid import Grid
 from Slice import Slice
 
