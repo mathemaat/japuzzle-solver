@@ -25,7 +25,7 @@ class Puzzle(object):
     self.validateColumns()
 
   def validateRows(self):
-    for i in xrange(self.height):
+    for i in range(self.height):
       length = len(self.rows[i])
       if length == 0:
         raise Exception('Row %d doesn\'t contain any values' % i)
@@ -37,7 +37,7 @@ class Puzzle(object):
           raise Exception('Span of row %d is %d (max is %d)' % (i, span, self.width))
 
   def validateColumns(self):
-    for i in xrange(self.width):
+    for i in range(self.width):
       length = len(self.columns[i])
       if length == 0:
         raise Exception('Column %d doesn\'t contain any values' % i)
@@ -50,7 +50,7 @@ class Puzzle(object):
 
   def getRowMatrix(self):
     rowMatrix = [None] * self.height
-    for i in xrange(self.height):
+    for i in range(self.height):
       total = sum(self.rows[i])
       if total == 0:
         rowMatrix[i] = [0]
@@ -58,7 +58,7 @@ class Puzzle(object):
         rowMatrix[i] = list(self.rows[i])
 
     maxLength = self.getMaxRowLength(rowMatrix)
-    for i in xrange(len(rowMatrix)):
+    for i in range(len(rowMatrix)):
       while len(rowMatrix[i]) < maxLength:
         rowMatrix[i].insert(0, None)
 
@@ -66,7 +66,7 @@ class Puzzle(object):
 
   def getColumnMatrix(self):
     columnMatrix = [None] * self.width
-    for i in xrange(self.width):
+    for i in range(self.width):
       total = sum(self.columns[i])
       if total == 0:
         columnMatrix[i] = [0]
@@ -74,7 +74,7 @@ class Puzzle(object):
         columnMatrix[i] = list(self.columns[i])
 
     maxLength = self.getMaxRowLength(columnMatrix)
-    for i in xrange(len(columnMatrix)):
+    for i in range(len(columnMatrix)):
       while len(columnMatrix[i]) < maxLength:
         columnMatrix[i].insert(0, None)
 
@@ -105,10 +105,10 @@ class Puzzle(object):
         else:
           line += (' ' * cellWidth + str(hint))[-cellWidth:]
       line = lineFormat % (' ' * offset, line)
-      print line
+      print(line)
 
     border = borderFormat % ('-' * offset, '-' * cellWidth * self.width)
-    print border
+    print(border)
 
     for i, row in enumerate(rowMatrix):
       line1 = ''
@@ -130,13 +130,13 @@ class Puzzle(object):
           fill += ' ' * cellWidth
       line1 = lineFormat % (line1, fill)
       line2 = lineFormat % (line2, fill)
-      print line1
+      print(line1)
       if cellHeight >= 2:
         extraLines = cellHeight - 1
         while extraLines >= 1:
-          print line2
+          print(line2)
           extraLines -= 1
-    print border
+    print(border)
 
   def solve(self):
     self.iteration = 1
