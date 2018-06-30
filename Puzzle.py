@@ -106,10 +106,10 @@ class Puzzle(object):
         else:
           line += (' ' * cellWidth + str(hint))[-cellWidth:]
       line = lineFormat % (' ' * offset, line)
-      print line
+      print(line)
 
     border = borderFormat % ('-' * offset, '-' * cellWidth * self.width)
-    print border
+    print(border)
 
     for i, row in enumerate(rowMatrix):
       line1 = ''
@@ -131,13 +131,13 @@ class Puzzle(object):
           fill += ' ' * cellWidth
       line1 = lineFormat % (line1, fill)
       line2 = lineFormat % (line2, fill)
-      print line1
+      print(line1)
       if cellHeight >= 2:
         extraLines = cellHeight - 1
         while extraLines >= 1:
-          print line2
+          print(line2)
           extraLines -= 1
-    print border
+    print(border)
 
   def solve(self):
     self.iteration = 1
