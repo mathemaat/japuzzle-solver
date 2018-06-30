@@ -32,14 +32,14 @@ class Slice(object):
 
     minStartPositions = []
     maxEndPositions = []
-    for n in xrange(self.numberOfEntries):
+    for n in range(self.numberOfEntries):
       if n == 0:
         minStartPositions.append(0)
         maxEndPositions.insert(0, self.length - 1)
       else:
         minStartPositions.append(minStartPositions[n-1] + entryValues[n-1] + 1)
         maxEndPositions.insert(0, maxEndPositions[0] - entryValues[self.numberOfEntries-n] - 1)
-    for n in xrange(self.numberOfEntries):
+    for n in range(self.numberOfEntries):
       self.entries[n].initialiseBoundaries(minStartPositions[n], maxEndPositions[n])
 
   def updateRepresentation(self):
